@@ -200,9 +200,8 @@
             let signature = `<br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">--</span><br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-weight: bold;">${escapeHtml(fullName)}&nbsp;</span>${pronounsStr ? `<span style="font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-style: italic;">(${pronounsStr})</span>` : ''}<br>
-<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle)}</span><br><br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle)}</span>`;
 
-            // Add Job Title 2 if provided
             if (jobTitle2) {
                 signature += `<br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle2)}</span>`;
