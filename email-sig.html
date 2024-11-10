@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Signature Generator</title>
+    <style>
+        /* Container Styling */
+        #signature-generator-container {
+            font-family: Helvetica, sans-serif;
+            margin: 40px auto;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Heading */
+        #signature-generator-container h1 {
+            text-align: left;
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        /* Form Styling */
+        #signatureForm .form-group {
+            margin-bottom: 15px;
+        }
+        #signatureForm label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        #signatureForm input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        /* Pronoun Fields Side by Side */
+        #pronouns-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        #pronouns-group .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        /* Generate Button */
+        #generateBtn {
+            background-color: #53c4d6;
+            font-family: Helvetica, sans-serif;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        #generateBtn:hover {
+            background-color: #45a3b7;
+        }
+        /* Result Section */
+        #result {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #result h2 {
+            text-align: left;
+            color: #333333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        #signaturePreview {
+            border: 1px solid #cccccc;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #fafafa;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            line-height: 140%;
+        }
+        /* Instructions */
+        #instructions {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #555555;
+            text-align: left;
+        }
+        #instructions ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        #instructions li {
+            margin-bottom: 8px;
+        }
+        #instructions li strong {
+            display: inline-block;
+            width: 70px;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            #pronouns-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="signature-generator-container">
+        <h1>Email Signature Generator</h1>
+
+        <form id="signatureForm">
+            <div class="form-group">
+                <label for="fullname">Full Name</span></label>
+                <input type="text" id="fullname" name="fullname">
+            </div>
+            
+            <div id="pronouns-group">
+                <div class="form-group">
+                    <label for="pronoun1">Pronoun 1<span style="color: #888888; font-weight: normal;"> (optional)</span></label>
+                    <input type="text" id="pronoun1" name="pronoun1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="pronoun2">Pronoun 2<span style="color: #888888; font-weight: normal;"> (optional)</span></label>
+                    <input type="text" id="pronoun2" name="pronoun2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="pronoun3">Pronoun 3<span style="color: #888888; font-weight: normal;"> (optional)</span></label>
+                    <input type="text" id="pronoun3" name="pronoun3">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="jobtitle">Job Title</span><span style="color: #888888; font-weight: normal;"> (e.g., Professor, Instructor, Instructional Assistant)</span></label>
+                <input type="text" id="jobtitle" name="jobtitle">
+            </div>
+            
+            <button type="button" id="generateBtn">Generate Signature</button>
+        </form>
+
+        <div id="result">
+            <h2>Generated Email Signature</h2>
+            <div id="signaturePreview"></div>
+            <p style="text-align: left; font-size: 14px; margin-top: 13px; color: #888888;">Copy the signature above and paste it into the signature editor of your email client.</p>
+        </div>
+
+        
+    </div>
+
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            // Get form values
+            const fullName = document.getElementById('fullname').value.trim();
+            const pronoun1 = document.getElementById('pronoun1').value.trim();
+            const pronoun2 = document.getElementById('pronoun2').value.trim();
+            const pronoun3 = document.getElementById('pronoun3').value.trim();
+            const jobTitle = document.getElementById('jobtitle').value.trim();
+
+            // Validate required fields
+            if (!fullName || !jobTitle) {
+                alert('Please fill in all required fields (Full Name and Job Title).');
+                return;
+            }
+
+            // Build pronouns array
+            const pronouns = [];
+            if (pronoun1) pronouns.push(escapeHtml(pronoun1));
+            if (pronoun2) pronouns.push(escapeHtml(pronoun2));
+            if (pronoun3) pronouns.push(escapeHtml(pronoun3));
+
+            // Create pronouns string
+            let pronounsStr = '';
+            if (pronouns.length > 0) {
+                pronounsStr = pronouns.join('/');
+                pronounsStr = pronounsStr; // No parentheses here; parentheses added in the HTML
+            }
+
+            // Build the HTML signature
+            const signature = `<br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">--</span><br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-weight: bold;">${escapeHtml(fullName)}&nbsp;</span>${pronounsStr ? `<span style="font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-style: italic;">(${pronounsStr})</span>` : ''}<br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle)}</span><br><br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">San Diego City College Design</span><br>
+<a href="https://www.sdcc.gd/" style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color: black; text-decoration: none;">www.sdcc.gd</a><br>
+<a href="https://www.instagram.com/sdcitydesign" style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color: black;">Instagram</a><br>
+<a href="https://www.pinterest.com/sdcitygd/" style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color: black;">Pinterest</a><br><br style="line-height: 150%;">
+<img width="26px" height="52px" src="https://uploads-ssl.webflow.com/5d3ce9964401a55942e8c9bf/6050c835a300452188a9d0ca_sdccgd-logo.png">`;
+
+            // Render the signature in the preview
+            const signaturePreview = document.getElementById('signaturePreview');
+            signaturePreview.innerHTML = signature.trim();
+
+            // Show the result section
+            document.getElementById('result').style.display = 'block';
+        });
+
+        // Function to escape HTML special characters to prevent injection
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+
+</body>
+</html>
