@@ -149,6 +149,11 @@
                 <label for="jobtitle">Job Title</span><span style="color: #888888; font-weight: normal;"> (e.g., Professor, Instructor, Instructional Assistant)</span></label>
                 <input type="text" id="jobtitle" name="jobtitle">
             </div>
+
+            <div class="form-group">
+                <label for="jobtitle2">Job Title 2</span><span style="color: #888888; font-weight: normal;"> (optional)</span></label>
+                <input type="text" id="jobtitle2" name="jobtitle2">
+            </div>
             
             <button type="button" id="generateBtn">Generate Signature</button>
         </form>
@@ -170,6 +175,7 @@
             const pronoun2 = document.getElementById('pronoun2').value.trim();
             const pronoun3 = document.getElementById('pronoun3').value.trim();
             const jobTitle = document.getElementById('jobtitle').value.trim();
+            const jobTitle2 = document.getElementById('jobtitle2').value.trim();
 
             // Validate required fields
             if (!fullName || !jobTitle) {
@@ -191,10 +197,18 @@
             }
 
             // Build the HTML signature
-            const signature = `<br>
+            let signature = `<br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">--</span><br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-weight: bold;">${escapeHtml(fullName)}&nbsp;</span>${pronounsStr ? `<span style="font-size: 12px; font-family: Helvetica, Arial, sans-serif; font-style: italic;">(${pronounsStr})</span>` : ''}<br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle)}</span><br><br>
+
+            // Add Job Title 2 if provided
+            if (jobTitle2) {
+                signature += `<br>
+<span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">${escapeHtml(jobTitle2)}</span>`;
+            }
+                                                                
+            signature += `<br><br>
 <span style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif;">San Diego City College Design</span><br>
 <a href="https://www.sdcc.gd/" style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color: black; text-decoration: none;">www.sdcc.gd</a><br>
 <a href="https://www.instagram.com/sdcitydesign" style="line-height: 140%; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color: black;">Instagram</a><br>
